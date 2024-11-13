@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Skids</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <style>
+        body { font-family: 'Roboto', sans-serif; background-color: #f4f4f9; color: #333; margin: 0; padding: 20px; display: flex; justify-content: center; align-items: center; min-height: 100vh; box-sizing: border-box; }
+        .container { max-width: 900px; background-color: #fff; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); padding: 20px; text-align: center; }
+        h2 { font-size: 2.2em; color: #4a90e2; margin-bottom: 20px; }
+        .sections { display: flex; flex-wrap: wrap; gap: 20px; }
+        .section { flex: 1; min-width: 300px; background-color: #f9f9f9; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+        .section h3 { font-size: 1.8em; color: #333; margin-bottom: 15px; text-align: center; }
+        label, input, textarea, button, .alert { margin: 10px 0; }
+        input, textarea { width: 100%; padding: 10px; font-size: 1em; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { padding: 10px 20px; font-size: 1em; font-weight: bold; color: #fff; background-color: #4a90e2; border: none; border-radius: 4px; cursor: pointer; width: 100%; }
+        button:hover { background-color: #357ab8; }
+        .alert { color: #e74c3c; font-size: 1.2em; font-weight: bold; }
+        .popup, .overlay { display: none; position: fixed; }
+        .overlay { top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 999; }
+        .popup { top: 50%; left: 50%; transform: translate(-50%, -50%); background-color: white; padding: 30px; border: 3px solid red; border-radius: 8px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); text-align: center; z-index: 1000; }
+        .popup h3 { color: red; font-size: 2em; font-weight: bold; text-transform: uppercase; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>Gestão de Skids</h2>
+    <div class="sections">
+        <div class="section">
+            <h3>Registro de Skid em Processo</h3>
+            <label for="skid-number">Número do Skid:</label>
+            <input type="number" id="skid-number" min="1" max="150" required>
+            <button onclick="registerSkid()">Registrar Skid</button>
+            <button onclick="generateExcelReport()">Gerar Relatório</button>
+            <div id="message" class="alert"></div>
+        </div>
+        <div class="section">
+            <h3>Registro de Manutenção</h3>
+            <label for="maintenance-skid">Número do Skid:</label>
+            <input type="number" id="maintenance-skid" min="1" max="150" required>
+            <label for="defect-description">Descrição do Defeito:</label>
+            <textarea id="defect-description" rows="3" placeholder="Descreva o defeito..."></textarea>
+            <button onclick="registerMaintenance()">Registrar Manutenção</button>
+            <div id="maintenance-message" class="alert"></div>
+        </div>
+        <div class="section">
+            <h3>Skids para Limpeza e Manutenção</h3>
+            <button onclick="updateDecapexList()">Atualizar Lista</button>
+            <ul id="decapex-list"></ul>
+        </div>
+    </div>
+</div>
+<div class="overlay" id="overlay"></div>
+<div id="alert-popup" class="popup">
+    <h3>URGENTE: SKID PRECISA SER ENVIADO PARA LIMPEZA DECAPEX!</h3>
+    <button onclick="closePopup()">Fechar</button>
+</div>
+<script>
+    const totalSkids = 150;
+    let skidCycles = {}; 
+    let skidsForRemoval = []; 
+    let skidsForMaintenance = [];
+    let skidRecords = []; 
+    let maintenanceRecords = [];
+
+    function loadData() {
+        skidCycles = JSON.parse(localStorage.getItem("skidCycles")) || {};
+        skidRecords = JSON.parse(localStorage.getItem("skidRecords")) || [];
+        maintenanceRecords = JSON.parse(localStorage.getItem("maintenanceRecords")) || [];
+        skidsForRemoval = JSON.parse(localStorage.getItem("skidsForRemoval")) || [];
+        skidsForMaintenance = JSON.parse(localStorage.getItem("skidsForMaintenance")) || [];
+        updateDecapexList();
+    }
+    function saveData() {
+        localStorage.setItem("skidCycles", JSON.stringify(skidCycles));
+        localStorage.setItem("skidRecords", JSON.stringify(skidRecords));
+        localStorage.setItem("maintenanceRecords", JSON.stringify(maintenanceRecords));
+        localStorage.setItem("skidsForRemoval", JSON.stringify(skidsForRemoval));
+        localStorage.setItem("skidsForMaintenance", JSON.stringify(skidsForMaintenance));
+    }
+    function initializeCycles() {
+        for (let i = 1; i <= totalSkids; i++) { if (!skidCycles[i]) skidCycles[i] = 0; }
+    }
+    function registerSkid() { /* código de registro de skid */ }
+    function registerMaintenance() { /* código de registro de manutenção */ }
+    function updateDecapexList() { /* código para atualizar a lista de limpeza e manutenção */ }
+    function generateExcelReport() { /* código para gerar relatório Excel */ }
+    function showAlertPopup() { document.getElementById("alert-popup").style.display = "block"; document.getElementById("overlay").style.display = "block"; }
+    function closePopup() { document.getElementById("alert-popup").style.display = "none"; document.getElementById("overlay").style.display = "none"; }
+
+    loadData();
+    initializeCycles();
+</script>
+</body>
+</html>
+
+
+
